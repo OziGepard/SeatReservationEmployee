@@ -1,6 +1,7 @@
 package com.example.seatreservationemployee.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,13 +52,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
                 is Resource.Success -> {
                     binding.loginProgress.isVisible = false
-                    Snackbar.make(requireView(), "Logged In", Snackbar.LENGTH_SHORT).show()
+                    viewModel.retrofitGetDate()
                     val action = LoginFragmentDirections.actionLoginFragmentToEmployeeOptions()
                     findNavController().navigate(action)
                 }
 
                 is Resource.Error -> {
                     binding.loginProgress.isVisible = false
+                    Log.d(TAG, "initializeUI: ${it.message}")
                     Snackbar.make(requireView(), it.message!!, Snackbar.LENGTH_SHORT).show()
                 }
             }
