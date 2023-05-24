@@ -22,7 +22,7 @@ class EmployeeRepository @Inject constructor(
 ) {
 
     suspend fun employeeAuth(loginText: String, passwordText: String): Resource<AuthResult> {
-        return withContext(Dispatchers.IO){
+        return withContext(Dispatchers.IO) {
             safeCall {
                 val result = mAuth.signInWithEmailAndPassword(loginText, passwordText).await()
                 Resource.Success(result)
@@ -31,7 +31,7 @@ class EmployeeRepository @Inject constructor(
     }
 
     suspend fun retrofitGetDate(): Resource<DateResponse> {
-        return withContext(Dispatchers.IO){
+        return withContext(Dispatchers.IO) {
             safeCall {
                 val result = retrofitDate.getActualDate().await()
                 Resource.Success(result)
@@ -39,8 +39,8 @@ class EmployeeRepository @Inject constructor(
         }
     }
 
-    suspend fun updateReservations(actualDate: LocalDate): Resource<QuerySnapshot>{
-        return withContext(Dispatchers.IO){
+    suspend fun updateReservations(actualDate: LocalDate): Resource<QuerySnapshot> {
+        return withContext(Dispatchers.IO) {
             safeCall {
                 val result = dbFB.getReservationDaoFB.updateReservations(actualDate).await()
                 Resource.Success(result)

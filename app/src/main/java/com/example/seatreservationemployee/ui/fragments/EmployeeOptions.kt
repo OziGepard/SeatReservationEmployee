@@ -5,15 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.example.seatreservationemployee.R
 import com.example.seatreservationemployee.databinding.FragmentEmployeeOptionsBinding
 import com.example.seatreservationemployee.ui.EmployeeActivity
 import com.example.seatreservationemployee.ui.EmployeeViewModel
 import com.example.seatreservationemployee.utils.Resource
-import com.google.android.material.snackbar.Snackbar
 
 class EmployeeOptions : Fragment(R.layout.fragment_employee_options) {
 
@@ -43,18 +40,24 @@ class EmployeeOptions : Fragment(R.layout.fragment_employee_options) {
         viewModel.datetimeFromAPIStatus.observe(this) {
             when (it) {
                 is Resource.Loading -> {
-                    binding.getDateFromAPI.text = "Pobrano datę z API!"
+                    binding.getDateFromAPI.text =
+                        resources.getString(R.string.date_from_api_loading)
                 }
 
                 is Resource.Success -> {
-                    binding.getDateFromAPI.text = "Pobrano datę z API!"
+                    binding.getDateFromAPI.text =
+                        resources.getString(R.string.date_from_api_success)
                     viewModel.updateReservations(it.data!!.datetime)
                 }
 
                 is Resource.Error -> {
-                    binding.getDateFromAPI.text = "Nie udało się pobrać daty z API!"
+                    binding.getDateFromAPI.text =
+                        buildString {
+                            append(resources.getString(R.string.date_from_api_error))
+                            append("\n")
+                            append(it.message)
+                        }
                     Log.d(TAG, "initializeUI: ${it.message}")
-                    Snackbar.make(requireView(), it.message!!, Snackbar.LENGTH_SHORT).show()
                 }
             }
         }
@@ -62,16 +65,23 @@ class EmployeeOptions : Fragment(R.layout.fragment_employee_options) {
         viewModel.reservationsUpdateStatus.observe(this) {
             when (it) {
                 is Resource.Loading -> {
-                    Snackbar.make(requireView(), "Usuwanie zaległych rezerwacji", Snackbar.LENGTH_SHORT).show()
+                    binding.updateReservations.text =
+                        resources.getString(R.string.update_reservations_loading)
                 }
 
                 is Resource.Success -> {
-                    Snackbar.make(requireView(), "Usuwanięto zaległe rezerwacje!", Snackbar.LENGTH_SHORT).show()
+                    binding.updateReservations.text =
+                        resources.getString(R.string.update_reservations_success)
                 }
 
                 is Resource.Error -> {
+                    binding.updateReservations.text =
+                        buildString {
+                            append(resources.getString(R.string.update_reservations_error))
+                            append("\n")
+                            append(it.message)
+                        }
                     Log.d(TAG, "initializeUI: ${it.message}")
-                    Snackbar.make(requireView(), it.message!!, Snackbar.LENGTH_SHORT).show()
                 }
             }
         }

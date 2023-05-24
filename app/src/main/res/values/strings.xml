@@ -8,5 +8,10 @@
     <string name="password_value">Hasło</string>
     <string name="users_issues">Problemy użytkowników</string>
     <string name="qr_code_scan">Skanowanie kodów QR</string>
-    <string name="date_from_api_loading">Pobieranie daty z API...</string>
+    <string name="date_from_api_loading">Pobieranie daty z API…</string>
+    <string name="date_from_api_success">Pobrano datę z API!</string>
+    <string name="date_from_api_error">Nie udało się pobrać daty z API! Błąd:</string>
+    <string name="update_reservations_loading">Usuwanie zaległych rezerwacji…</string>
+    <string name="update_reservations_success">Usunięto zaległe rezerwacje!</string>
+    <string name="update_reservations_error">Nie udało się usunąć zaległych rezerwacji! Błąd:</string>
 </resources>

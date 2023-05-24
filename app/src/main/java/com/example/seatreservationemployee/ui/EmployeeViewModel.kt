@@ -21,7 +21,7 @@ import javax.inject.Inject
 class EmployeeViewModel @Inject constructor(
     app: Application,
     private val repo: EmployeeRepository
-) : AndroidViewModel(app){
+) : AndroidViewModel(app) {
     private val TAG = "EmployeeViewModel"
 
     private val _userSignUpStatus = MutableLiveData<Resource<AuthResult>>()
@@ -34,12 +34,11 @@ class EmployeeViewModel @Inject constructor(
     val reservationsUpdateStatus: LiveData<Resource<QuerySnapshot>> = _reservationsUpdateStatus
 
 
-    fun signInUser(userLogin: String, userPassword: String){
-        if(userLogin.isEmpty() || userPassword.isEmpty()) {
+    fun signInUser(userLogin: String, userPassword: String) {
+        if (userLogin.isEmpty() || userPassword.isEmpty()) {
             Log.d(TAG, "signInUser: $userLogin, $userPassword")
             _userSignUpStatus.postValue(Resource.Error("Empty String"))
-        }
-        else {
+        } else {
             _userSignUpStatus.postValue(Resource.Loading())
             viewModelScope.launch(Dispatchers.Main) {
                 val loginResult = repo.employeeAuth(userLogin, userPassword)
@@ -48,7 +47,7 @@ class EmployeeViewModel @Inject constructor(
         }
     }
 
-    fun retrofitGetDate(){
+    fun retrofitGetDate() {
         _datetimeFromAPIStatus.postValue(Resource.Loading())
         viewModelScope.launch(Dispatchers.Main) {
             val datetimeResult = repo.retrofitGetDate()
@@ -56,10 +55,11 @@ class EmployeeViewModel @Inject constructor(
         }
     }
 
-    fun updateReservations(date: String){
+    fun updateReservations(date: String) {
         val actualDate = LocalDate.parse(date.substring(0, 10))
 
-        viewModelScope.launch(Dispatchers.Main){
+        _reservationsUpdateStatus.postValue(Resource.Loading())
+        viewModelScope.launch(Dispatchers.Main) {
             val reservationsUpdate = repo.updateReservations(actualDate)
             _reservationsUpdateStatus.postValue(reservationsUpdate)
         }

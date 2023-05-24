@@ -60,7 +60,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 is Resource.Error -> {
                     binding.loginProgress.isVisible = false
                     Log.d(TAG, "initializeUI: ${it.message}")
-                    Snackbar.make(requireView(), it.message!!, Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root, it.message!!, Snackbar.LENGTH_SHORT).show()
                 }
             }
         }
