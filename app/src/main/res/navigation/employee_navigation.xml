@@ -23,5 +23,35 @@
         android:id="@+id/employeeOptions"
         android:name="com.example.seatreservationemployee.ui.fragments.EmployeeOptions"
         android:label="fragment_employee_options"
-        tools:layout="@layout/fragment_employee_options" />
+        tools:layout="@layout/fragment_employee_options" >
+        <action
+            android:id="@+id/action_employeeOptions_to_helpdeskFragment"
+            app:destination="@id/helpdeskFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/helpdeskFragment"
+        android:name="com.example.seatreservationemployee.ui.fragments.HelpdeskFragment"
+        android:label="fragment_helpdesk"
+        tools:layout="@layout/fragment_helpdesk" >
+        <action
+            android:id="@+id/action_helpdeskFragment_to_helpdeskTicketFragment"
+            app:destination="@id/helpdeskTicketFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/helpdeskTicketFragment"
+        android:name="com.example.seatreservationemployee.ui.fragments.HelpdeskTicketFragment"
+        android:label="fragment_helpdesk_ticket"
+        tools:layout="@layout/fragment_helpdesk_ticket" >
+        <argument
+            android:name="issue"
+            app:argType="com.example.seatreservationemployee.models.Issue" />
+    </fragment>
 </navigation>

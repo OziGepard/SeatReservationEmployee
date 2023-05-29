@@ -33,4 +33,9 @@ class ReservationDaoFB @Inject constructor(
             .document(reservationPathArray[5])
             .delete()
     }
+
+    fun receiveIssues(): Task<QuerySnapshot> {
+        return db.collection("requests")
+            .get()
+    }
 }

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -40,6 +41,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun initializeUI() {
+
         val loginButton = binding.loginButton
         var loginText: String
         var passwordText: String
