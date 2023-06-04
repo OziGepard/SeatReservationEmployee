@@ -45,6 +45,7 @@ class HelpdeskFragment : Fragment(R.layout.fragment_helpdesk) {
          * IssueAdapter Initialize
          */
 
+        Log.d("TEST", "initializeUI: Przed stworzeniem")
         val issueAdapter = IssuesAdapter(this::changeFragment)
         binding.issueRecyclerview.apply {
             adapter = issueAdapter

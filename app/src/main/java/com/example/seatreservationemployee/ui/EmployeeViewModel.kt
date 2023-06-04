@@ -41,18 +41,6 @@ class EmployeeViewModel @Inject constructor(
     private val _receiveIssuesStatus = MutableLiveData<Resource<QuerySnapshot>>()
     val receiveIssuesStatus: LiveData<Resource<QuerySnapshot>> = _receiveIssuesStatus
 
-    fun receiveIssues() {
-        if (!isOnline()) {
-            _receiveIssuesStatus.postValue(Resource.Error("Brak połączenia z Internetem!"))
-        } else {
-            _receiveIssuesStatus.postValue(Resource.Loading())
-            viewModelScope.launch(Dispatchers.Main) {
-                val receiveIssues = repo.receiveIssues()
-                _receiveIssuesStatus.postValue(receiveIssues)
-            }
-        }
-    }
-
     fun signInUser(userLogin: String, userPassword: String) {
         if (userLogin.isEmpty() || userPassword.isEmpty()) {
             _userSignUpStatus.postValue(Resource.Error("Empty String"))
@@ -83,20 +71,29 @@ class EmployeeViewModel @Inject constructor(
         }
     }
 
-    private fun isOnline(): Boolean {
+    fun receiveIssues() {
+        if (!isOnline()) {
+            _receiveIssuesStatus.postValue(Resource.Error("Brak połączenia z Internetem!"))
+        } else {
+            _receiveIssuesStatus.postValue(Resource.Loading())
+            viewModelScope.launch(Dispatchers.Main) {
+                val receiveIssues = repo.receiveIssues()
+                _receiveIssuesStatus.postValue(receiveIssues)
+            }
+        }
+    }
+
+    fun isOnline(): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val capabilities =
             connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         if (capabilities != null) {
             if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
-                Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
                 return true
             } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
                 return true
             } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
-                Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
                 return true
             }
         }

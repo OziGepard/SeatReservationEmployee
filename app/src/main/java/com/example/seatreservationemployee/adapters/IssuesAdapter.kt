@@ -1,5 +1,6 @@
 package com.example.seatreservationemployee.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,7 @@ import com.example.seatreservationemployee.models.Issue
 
 class IssuesAdapter (private val clickListener: (Issue) -> Unit) : RecyclerView.Adapter<IssuesAdapter.IssuesViewHolder>(){
 
-    private var issuesList: List<Issue> = listOf()
+    private var issuesList: List<Issue> = listOf(Issue("cps", "qwe", "asd"))
 
     class IssuesViewHolder(itemView: View, clickAtPosition: (Int) -> Unit): RecyclerView.ViewHolder(itemView) {
         init {
@@ -24,6 +25,7 @@ class IssuesAdapter (private val clickListener: (Issue) -> Unit) : RecyclerView.
         parent: ViewGroup,
         viewType: Int
     ): IssuesViewHolder {
+        Log.d("TEST", "onCreateViewHolder:")
         return IssuesViewHolder(
             LayoutInflater.from(parent.context).inflate(
             R.layout.issue_element,
