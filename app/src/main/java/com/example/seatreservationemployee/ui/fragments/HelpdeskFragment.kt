@@ -17,6 +17,7 @@ import com.example.seatreservationemployee.models.Issue
 import com.example.seatreservationemployee.ui.EmployeeActivity
 import com.example.seatreservationemployee.ui.EmployeeViewModel
 import com.example.seatreservationemployee.utils.Resource
+import com.google.android.material.snackbar.Snackbar
 
 class HelpdeskFragment : Fragment(R.layout.fragment_helpdesk) {
 
@@ -80,6 +81,7 @@ class HelpdeskFragment : Fragment(R.layout.fragment_helpdesk) {
                 }
                 is Resource.Error -> {
                     binding.issueProgressbar.isVisible = false
+                    Snackbar.make(binding.root, resource.message!!, Snackbar.LENGTH_SHORT).show()
                     Log.d(TAG, "initializeUI: ${resource.message}")
                 }
             }
