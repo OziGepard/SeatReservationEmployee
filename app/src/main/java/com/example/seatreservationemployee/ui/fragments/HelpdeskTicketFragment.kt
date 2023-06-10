@@ -1,16 +1,19 @@
 package com.example.seatreservationemployee.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.seatreservationemployee.R
-import com.example.seatreservationemployee.databinding.FragmentHelpdeskBinding
 import com.example.seatreservationemployee.databinding.FragmentHelpdeskTicketBinding
 import com.example.seatreservationemployee.ui.EmployeeActivity
 import com.example.seatreservationemployee.ui.EmployeeViewModel
+import com.example.seatreservationemployee.utils.Resource
+import com.google.android.material.snackbar.Snackbar
 
 class HelpdeskTicketFragment : Fragment() {
 
@@ -40,5 +43,39 @@ class HelpdeskTicketFragment : Fragment() {
         binding.ticketIssueEmail.setText(args.issue.email)
         binding.ticketIssueTitle.setText(args.issue.title)
         binding.ticketIssueContent.setText(args.issue.content)
+
+        binding.ticketIssueSendButton.setOnClickListener {
+            val message = binding.ticketIssueMessage.text.toString()
+
+            viewModel.sendReply(message, args.issue.email)
+        }
+
+        viewModel.replyStatus.observe(this) {
+
+            when(it) {
+                is Resource.Loading -> {
+                    binding.ticketIssueSendButton.isEnabled = false
+                    binding.ticketIssueProgressbar.isVisible = true
+                }
+
+                is Resource.Error -> {
+                    binding.ticketIssueSendButton.isEnabled = true
+                    binding.ticketIssueProgressbar.isVisible = false
+                    Snackbar.make(binding.root, it.message!!, Snackbar.LENGTH_SHORT).show()
+
+                }
+
+                is Resource.Success -> {
+                    binding.ticketIssueSendButton.isEnabled = true
+                    binding.ticketIssueProgressbar.isVisible = false
+                    Snackbar.make(binding.root, it.data!!, Snackbar.LENGTH_SHORT).show()
+                    findNavController().navigateUp()
+
+                    viewModel.deleteUserIssue(args.issue.id)
+                    viewModel.clearReplyStatus()
+                }
+                else -> Log.d(TAG, "initializeUI: ReplyStatus Cleared")
+            }
+        }
     }
 }

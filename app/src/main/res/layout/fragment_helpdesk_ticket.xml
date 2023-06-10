@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:background="@drawable/main_background"
     tools:context=".ui.fragments.HelpdeskTicketFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,8 +19,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:enabled="false"
+            android:backgroundTint="@color/white"
             android:gravity="center"
             android:minHeight="48dp"
+            android:fontFamily="@font/ghino_medium"
+            android:textColor="@color/white"
             android:text="example.email98@gmail.com"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +36,10 @@
             android:enabled="false"
             android:gravity="center"
             android:minHeight="48dp"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/white"
             android:text="Example of Title"
+            android:fontFamily="@font/ghino_medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ticket_issue_email" />
@@ -43,8 +50,10 @@
             android:layout_height="wrap_content"
             android:enabled="false"
             android:gravity="center"
-            android:minHeight="48dp"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/white"
             android:text="@string/lorem_ipsum"
+            android:fontFamily="@font/ghino_medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ticket_issue_title" />
@@ -55,6 +64,10 @@
             android:layout_height="wrap_content"
             android:hint="@string/message_to_user"
             android:minHeight="48dp"
+            android:fontFamily="@font/ghino_medium"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:backgroundTint="@color/white"
             android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -67,10 +80,24 @@
             android:text="@string/send_message"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="20sp"
+            android:fontFamily="@font/ghino_bold"
+            android:backgroundTint="@color/blue"
+            android:drawableEnd="@drawable/send_button_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ticket_issue_message" />
+
+        <ProgressBar
+            android:id="@+id/ticket_issue_progressbar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ticket_issue_send_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

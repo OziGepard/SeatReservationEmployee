@@ -24,6 +24,11 @@ android {
     buildFeatures{
         viewBinding true
     }
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/DEPENDENCIES', 'META-INF/LICENSE', 'META-INF/LICENSE.txt', 'META-INF/LICENSE.md', 'META-INF/license.txt', 'META-INF/NOTICE.md', 'META-INF/NOTICE.txt', 'META-INF/notice.txt', 'META-INF/ASL2.0', 'META-INF/*.kotlin_module']
+        }
+    }
 
     buildTypes {
         release {
@@ -52,7 +57,7 @@ dependencies {
 
     //Firebase
     implementation 'com.google.firebase:firebase-firestore-ktx'
-    implementation 'com.google.firebase:firebase-firestore-ktx:24.6.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.6.1'
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
 
     //Hilt
@@ -88,7 +93,11 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.9.0'
 
     //Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.7.2'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
-    implementation 'com.squareup.okhttp3:okhttp:3.14.7'
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+
+    //MailDroid
+    implementation 'com.github.nedimf:maildroid:v0.1.1-release'
+
 }

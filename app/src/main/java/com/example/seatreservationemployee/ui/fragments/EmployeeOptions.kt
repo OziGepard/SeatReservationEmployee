@@ -1,6 +1,8 @@
 package com.example.seatreservationemployee.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -49,8 +51,17 @@ class EmployeeOptions : Fragment(R.layout.fragment_employee_options) {
         }
 
         /**
+         * Event Button: Scan QR Code
+         */
+
+        binding.scanningOption.setOnClickListener {
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivity(intent)
+        }
+        /**
          * Retrieve date and time from API
          */
+
         if(!isReservationUpdated) {
             viewModel.datetimeFromAPIStatus.observe(this) {
                 Log.d(TAG, "initializeUI: AGAIN!")

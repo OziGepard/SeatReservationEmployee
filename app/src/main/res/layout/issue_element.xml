@@ -3,14 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:layout_marginTop="8dp">
+    android:background="@drawable/issue_element_bg"
+    android:layout_margin="8dp"
+    android:padding="8dp">
 
     <TextView
         android:id="@+id/ticket_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="example.email98@gmail.com"
+        android:fontFamily="@font/ghino_medium"
+        android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,9 +24,13 @@
         android:id="@+id/ticket_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Problem with reservation :("
         android:layout_marginTop="8dp"
+        android:text="Problem with reservation :("
+        android:fontFamily="@font/ghino_medium"
+        android:textColor="@color/white"
         android:textSize="18sp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/ticket_email"
         app:layout_constraintStart_toStartOf="@+id/ticket_email"
         app:layout_constraintTop_toBottomOf="@+id/ticket_email" />

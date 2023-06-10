@@ -56,4 +56,14 @@ class EmployeeRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun deleteUserIssue(id: String): Resource<Void> {
+        return withContext(Dispatchers.IO) {
+            safeCall {
+                val result = dbFB.getReservationDaoFB.deleteUserIssue(id).await()
+                Resource.Success(result)
+            }
+        }
+
+    }
 }

@@ -38,4 +38,10 @@ class ReservationDaoFB @Inject constructor(
         return db.collection("requests")
             .get()
     }
+
+    fun deleteUserIssue(id: String): Task<Void> {
+        return db.collection("requests")
+            .document(id)
+            .delete()
+    }
 }

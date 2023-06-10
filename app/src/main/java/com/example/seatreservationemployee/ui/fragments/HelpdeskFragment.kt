@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -71,13 +70,17 @@ class HelpdeskFragment : Fragment(R.layout.fragment_helpdesk) {
                     var issue: Issue
                     resource.data!!.forEach { document ->
                         issue = Issue(
+                            document.id,
                             document.get("e-mail").toString(),
                             document.get("content").toString(),
                             document.get("topic").toString()
                         )
                         issueList.add(issue)
                     }
+                    binding.issueInfo.isVisible = issueList.isEmpty()
                     issueAdapter.updateList(issueList)
+
+
                 }
                 is Resource.Error -> {
                     binding.issueProgressbar.isVisible = false

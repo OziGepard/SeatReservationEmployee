@@ -9,9 +9,13 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import co.nedim.maildroidx.MaildroidXType
+import co.nedim.maildroidx.callback
+import co.nedim.maildroidx.sendEmail
 import com.example.seatreservationemployee.repository.EmployeeRepositoryImpl
 import com.example.seatreservationemployee.retrofit.DateResponse
 import com.example.seatreservationemployee.utils.Resource
+import com.example.seatreservationemployee.utils.SecretConstants
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.firestore.QuerySnapshot
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -40,6 +44,10 @@ class EmployeeViewModel @Inject constructor(
 
     private val _receiveIssuesStatus = MutableLiveData<Resource<QuerySnapshot>>()
     val receiveIssuesStatus: LiveData<Resource<QuerySnapshot>> = _receiveIssuesStatus
+
+    private val _replyStatus = MutableLiveData<Resource<String>?>()
+    val replyStatus: LiveData<Resource<String>?> = _replyStatus
+
 
     fun signInUser(userLogin: String, userPassword: String) {
         if (userLogin.isEmpty() || userPassword.isEmpty()) {
@@ -98,5 +106,54 @@ class EmployeeViewModel @Inject constructor(
             }
         }
         return false
+    }
+
+    fun sendReply(message: String, email: String) {
+        if(!isOnline()) {
+            _replyStatus.postValue(Resource.Error("Brak połączenia z Internetem!"))
+        } else {
+            _replyStatus.postValue(Resource.Loading())
+            viewModelScope.launch(Dispatchers.Main) {
+                sendEmail {
+                    smtp("smtp.gmail.com")
+                    smtpUsername(SecretConstants.EMAIL_USERNAME)
+                    smtpPassword(SecretConstants.EMAIL_PASSWORD)
+                    port("465")
+                    type(MaildroidXType.HTML)
+                    to(email)
+                    from("janedoen@email.com")
+                    subject("Odpowiedź na zapytanie")
+                    body(
+                        message
+                    )
+                    callback {
+                        timeOut(3000)
+                        onSuccess {
+                            _replyStatus.postValue(Resource.Success("Wysyłanie maila powiodło się!"))
+                        }
+                        onFail {
+                            _replyStatus.postValue(Resource.Error("Wysyłanie maila niepowiodło się!"))
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    fun deleteUserIssue(id: String) {
+        viewModelScope.launch(Dispatchers.Main) {
+            val deleteUserIssueStatus = repo.deleteUserIssue(id)
+            if(deleteUserIssueStatus is Resource.Error)
+            {
+                Log.d(TAG, "deleteUserIssue: Something went wrong, trying again to delete the user issue from FB")
+                deleteUserIssue(id)
+            }
+
+        }
+    }
+
+    fun clearReplyStatus() {
+        _replyStatus.postValue(null)
     }
 }

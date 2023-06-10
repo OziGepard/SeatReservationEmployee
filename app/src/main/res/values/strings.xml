@@ -13,6 +13,7 @@
     <string name="update_reservations_success">Usunięto zaległe rezerwacje!</string>
     <string name="update_reservations_error">Nie udało się usunąć zaległych rezerwacji! Błąd:</string>
     <string name="send_message">Wyślij wiadomość</string>
-    <string name="message_to_user">Wiadomość do użytkownika...</string>
+    <string name="message_to_user">Wiadomość do użytkownika…</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean egestas orci quis mauris porttitor, id ullamcorper nisi molestie. Nulla eget pretium erat. Curabitur imperdiet pellentesque tellus, et maximus tellus pellentesque non. Fusce at mi ut magna interdum cursus. Cras tempor urna neque, ut aliquam erat pharetra eget. Maecenas consectetur nulla et finibus eleifend. Vestibulum ante ipsum primis in faucibus morbi.</string>
+    <string name="no_issues">Brak zgłoszeń od użytkowników</string>
 </resources>

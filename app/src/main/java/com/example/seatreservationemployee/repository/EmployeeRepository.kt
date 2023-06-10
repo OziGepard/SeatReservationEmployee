@@ -15,4 +15,5 @@ interface EmployeeRepository {
     suspend fun updateReservations(actualDate: LocalDate): Resource<QuerySnapshot>
 
     suspend fun receiveIssues(): Resource<QuerySnapshot>
+    suspend fun deleteUserIssue(id: String): Resource<Void>
 }
