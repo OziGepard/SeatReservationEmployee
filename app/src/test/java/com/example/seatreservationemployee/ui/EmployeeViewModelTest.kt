@@ -6,13 +6,11 @@ import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.seatreservationemployee.repository.EmployeeRepositoryImpl
 import com.example.seatreservationemployee.retrofit.DateResponse
-import com.example.seatreservationemployee.utils.DispatchesProvider
 import com.example.seatreservationemployee.utils.Resource
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.firestore.QuerySnapshot
 import io.mockk.coEvery
 import io.mockk.mockk
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -25,10 +23,12 @@ import org.junit.Test
 import org.junit.rules.TestRule
 
 class EmployeeViewModelTest {
+    @OptIn(ExperimentalCoroutinesApi::class)
     private val testDispatcher = UnconfinedTestDispatcher()
 
     private val getApplication: Application = mockk(relaxed = true)
     private val getEmployeeRepository: EmployeeRepositoryImpl = mockk()
+    private val resourcesProvider: ResourcesProvider = mockk(relaxed = true)
     private val authResult: AuthResult = mockk()
     private val dateResult: DateResponse = mockk()
     private val queryResult: QuerySnapshot = mockk()
@@ -234,6 +234,7 @@ class EmployeeViewModelTest {
 
     private fun createViewModel(): EmployeeViewModel = EmployeeViewModel(
         getApplication,
-        getEmployeeRepository
+        getEmployeeRepository,
+        resourcesProvider
     )
 }

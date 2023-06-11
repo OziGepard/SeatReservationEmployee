@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
+import androidx.annotation.StringRes
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,6 +13,7 @@ import androidx.lifecycle.viewModelScope
 import co.nedim.maildroidx.MaildroidXType
 import co.nedim.maildroidx.callback
 import co.nedim.maildroidx.sendEmail
+import com.example.seatreservationemployee.R
 import com.example.seatreservationemployee.repository.EmployeeRepositoryImpl
 import com.example.seatreservationemployee.retrofit.DateResponse
 import com.example.seatreservationemployee.utils.Resource
@@ -19,19 +21,32 @@ import com.example.seatreservationemployee.utils.SecretConstants
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.firestore.QuerySnapshot
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton
+class ResourcesProvider @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
+    fun getString(@StringRes stringResId: Int): String {
+        return context.getString(stringResId)
+    }
+    fun getContext(): Context {
+        return context
+    }
+}
 
 @HiltViewModel
 class EmployeeViewModel @Inject constructor(
     app: Application,
-    private val repo: EmployeeRepositoryImpl
+    private val repo: EmployeeRepositoryImpl,
+    private val resourcesProvider: ResourcesProvider
 ) : AndroidViewModel(app) {
     private val TAG = "EmployeeViewModel"
-
-    private val context = app.applicationContext
 
     private val _userSignUpStatus = MutableLiveData<Resource<AuthResult>>()
     val userSignUpStatus: LiveData<Resource<AuthResult>> = _userSignUpStatus
@@ -51,7 +66,11 @@ class EmployeeViewModel @Inject constructor(
 
     fun signInUser(userLogin: String, userPassword: String) {
         if (userLogin.isEmpty() || userPassword.isEmpty()) {
-            _userSignUpStatus.postValue(Resource.Error("Empty String"))
+            _userSignUpStatus.postValue(
+                Resource.Error(
+                    resourcesProvider.getString(R.string.empty_string)
+                )
+            )
         } else {
             _userSignUpStatus.postValue(Resource.Loading())
             viewModelScope.launch(Dispatchers.Main) {
@@ -81,7 +100,13 @@ class EmployeeViewModel @Inject constructor(
 
     fun receiveIssues() {
         if (!isOnline()) {
-            _receiveIssuesStatus.postValue(Resource.Error("Brak połączenia z Internetem!"))
+            _receiveIssuesStatus.postValue(
+                Resource.Error(
+                    resourcesProvider.getString(
+                        R.string.no_internet_connection
+                    )
+                )
+            )
         } else {
             _receiveIssuesStatus.postValue(Resource.Loading())
             viewModelScope.launch(Dispatchers.Main) {
@@ -93,7 +118,9 @@ class EmployeeViewModel @Inject constructor(
 
     fun isOnline(): Boolean {
         val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            resourcesProvider
+                .getContext()
+                .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val capabilities =
             connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         if (capabilities != null) {
@@ -109,8 +136,14 @@ class EmployeeViewModel @Inject constructor(
     }
 
     fun sendReply(message: String, email: String) {
-        if(!isOnline()) {
-            _replyStatus.postValue(Resource.Error("Brak połączenia z Internetem!"))
+        if (!isOnline()) {
+            _replyStatus.postValue(
+                Resource.Error(
+                    resourcesProvider.getString(
+                        R.string.no_internet_connection
+                    )
+                )
+            )
         } else {
             _replyStatus.postValue(Resource.Loading())
             viewModelScope.launch(Dispatchers.Main) {
@@ -129,10 +162,22 @@ class EmployeeViewModel @Inject constructor(
                     callback {
                         timeOut(3000)
                         onSuccess {
-                            _replyStatus.postValue(Resource.Success("Wysyłanie maila powiodło się!"))
+                            _replyStatus.postValue(
+                                Resource.Success(
+                                    resourcesProvider.getString(
+                                        R.string.mail_sent_succes
+                                    )
+                                )
+                            )
                         }
                         onFail {
-                            _replyStatus.postValue(Resource.Error("Wysyłanie maila niepowiodło się!"))
+                            _replyStatus.postValue(
+                                Resource.Error(
+                                    resourcesProvider.getString(
+                                        R.string.mail_sent_failure
+                                    )
+                                )
+                            )
                         }
                     }
                 }
@@ -144,9 +189,11 @@ class EmployeeViewModel @Inject constructor(
     fun deleteUserIssue(id: String) {
         viewModelScope.launch(Dispatchers.Main) {
             val deleteUserIssueStatus = repo.deleteUserIssue(id)
-            if(deleteUserIssueStatus is Resource.Error)
-            {
-                Log.d(TAG, "deleteUserIssue: Something went wrong, trying again to delete the user issue from FB")
+            if (deleteUserIssueStatus is Resource.Error) {
+                Log.d(
+                    TAG,
+                    "deleteUserIssue: Something went wrong, trying again to delete the user issue from FB"
+                )
                 deleteUserIssue(id)
             }
 
